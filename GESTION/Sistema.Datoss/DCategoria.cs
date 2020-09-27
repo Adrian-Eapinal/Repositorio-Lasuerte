@@ -74,6 +74,37 @@ namespace Sistema.Datoss
                 }
             }
         }
+
+        public string Existe(string valor)
+        {
+            string Rpta = "";
+            SqlConnection SqlCon = new SqlConnection();
+            try
+            {
+                SqlCon = Conexion.gestInstancia().CrarConexion();
+                SqlCommand comando = new SqlCommand("categoria_existe", SqlCon);
+                comando.CommandType = CommandType.StoredProcedure;
+                comando.Parameters.Add("@valor", SqlDbType.VarChar).Value = valor;
+                SqlParameter ParExiste = new SqlParameter();//objeto para instanciar la 
+                ParExiste.ParameterName = "@existe";
+                ParExiste.SqlDbType = SqlDbType.Int;
+                ParExiste.Direction = ParameterDirection.Output;
+                comando.Parameters.Add(ParExiste);
+                SqlCon.Open();
+                comando.ExecuteNonQuery();
+                Rpta = Convert.ToString (ParExiste.Value);
+            }
+            catch (Exception ex)
+            {
+
+                Rpta = ex.Message; ;
+            }
+            finally
+            {
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            return Rpta;
+        }
         public string Insertar(Categoria obj)
         {
             string Rpta = "";
