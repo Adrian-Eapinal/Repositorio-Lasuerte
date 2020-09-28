@@ -103,5 +103,17 @@ namespace Sistema.Presentacion
                 childForm.Close();
             }
         }
+
+        private void EquiposToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmCategoria frm = new FrmCategoria();
+            frm.MdiParent = this;
+            frm.Show();
+        }
+
+        private void ProToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
