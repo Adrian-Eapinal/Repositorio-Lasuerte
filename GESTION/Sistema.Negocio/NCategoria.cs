@@ -14,9 +14,10 @@ namespace Sistema.Negocio
         public static DataTable Listar()
         {
             DCategoria Datos = new DCategoria();
-            return Datos.Listar();//para retonar lo que me envie el metodo listar
+            return Datos.Listar();
         }
-         public static DataTable Buscar(string valor)
+
+        public static DataTable Buscar(string valor)
         {
             DCategoria Datos = new DCategoria();
             return Datos.Buscar(valor);

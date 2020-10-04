@@ -29,7 +29,7 @@ namespace Sistema.Datoss
             SqlConnection Cadena = new SqlConnection();
             try
             {
-                Cadena.ConnectionString = "Server" + this.Servidor + "Database" + this.Base + ";";
+                Cadena.ConnectionString = "Server=" + this.Servidor +"; Database =" + this.Base + ";";
                 if (this.Seguridad)
                 {
                     Cadena.ConnectionString = Cadena.ConnectionString + "Integrated Security = SSPI";

@@ -15,33 +15,28 @@ namespace Sistema.Datoss
 
         //Funciones para poder manipular los datos referentes a la tabla categoria
 
-        public DataTable Listar()
-        { //funciona para devilver un datatable
-            SqlDataReader Resultado; //Forma de leer una secuencia de filas de una BD en sql server
-            DataTable tabla = new DataTable(); //El objeto datatable es una tabla en memoria
-            SqlConnection SqlCon = new SqlConnection(); //instancia para la conexion
+        public DataTable Listar()// Para que me devuelva un datatable
+        {
+            SqlDataReader Resultado;// Para leer las secuencias de las filas de la BD
+            DataTable Tabla = new DataTable();// La tabla en memoria de la BD
+            SqlConnection SqlCon = new SqlConnection();//Variable para establecer la conexion con la BD
             try
             {
-                SqlCon = Conexion.gestInstancia().CrarConexion();//para crear la instancia 
-                SqlCommand comando = new SqlCommand("categoria_listar", SqlCon);//la clase sqlcomand representa un instruccion transac sql o a un procedimiento
-                comando.CommandType = CommandType.StoredProcedure;
+                SqlCon = Conexion.gestInstancia().CrarConexion();// Para crear la instancia de la  conexion 
+                SqlCommand Comando = new SqlCommand("categoria_listar", SqlCon);//sqlcomand representa una instruccion transac sql o el procedimiento almacenado
+                Comando.CommandType = CommandType.StoredProcedure;// Se le espesifica que es de tipo procedimiento almacenado
                 SqlCon.Open();
-                Resultado = comando.ExecuteReader();
-                tabla.Load(Resultado);
-                return tabla;
+                Resultado = Comando.ExecuteReader();
+                Tabla.Load(Resultado);// Para rellenar el datatable con el metodo load
+                return Tabla;
             }
             catch (Exception ex)
             {
-
                 throw ex;
-
             }
             finally
             {
                 if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
-                {
-
-                }
             }
         }
         public DataTable Buscar(string valor)
@@ -85,7 +80,7 @@ namespace Sistema.Datoss
                 SqlCommand comando = new SqlCommand("categoria_existe", SqlCon);
                 comando.CommandType = CommandType.StoredProcedure;
                 comando.Parameters.Add("@valor", SqlDbType.VarChar).Value = valor;
-                SqlParameter ParExiste = new SqlParameter();//objeto para instanciar la 
+                SqlParameter ParExiste = new SqlParameter();//objeto para crar parametros nuevos 
                 ParExiste.ParameterName = "@existe";
                 ParExiste.SqlDbType = SqlDbType.Int;
                 ParExiste.Direction = ParameterDirection.Output;

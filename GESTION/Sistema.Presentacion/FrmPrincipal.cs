@@ -107,11 +107,17 @@ namespace Sistema.Presentacion
         private void EquiposToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmCategoria frm = new FrmCategoria();
-            frm.MdiParent = this;
-            frm.Show();
+            frm.MdiParent = this;//para el formulario principal sea el contenerdor de los demas 
+            frm.Show();//para mostrarlo
+
         }
 
         private void ProToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SALIDADEEQUIPOSToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
