@@ -13,6 +13,8 @@ namespace Sistema.Presentacion
 {
     public partial class FrmCategoria : Form
     {
+
+        private string NombreAnt;
         public FrmCategoria()
         {
             InitializeComponent();
@@ -25,6 +27,7 @@ namespace Sistema.Presentacion
             {
                 Dgvlistado.DataSource = NCategoria.Listar();
                 this.Formato();
+                this.Limpiar();
 
                 lblTotall.Text = "Total de registros: " + Convert.ToString(Dgvlistado.Rows.Count);
             }
@@ -72,6 +75,7 @@ namespace Sistema.Presentacion
             txtDescripcion.Clear();
             txtbuscar.Clear();
             btninsertar.Visible = true;
+            btnactualizar.Visible = false;
             ErrorIcono.Clear();
 
         }
@@ -151,6 +155,52 @@ namespace Sistema.Presentacion
             this.Limpiar();
             Tabgeneral.SelectedIndex = 0;
 
+        }
+
+        private void Dgvlistado_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            this.Limpiar();//para oculta el actualizar 
+            btnactualizar.Visible = true;
+            btninsertar.Visible = false;
+            txtId.Text = Convert.ToString(Dgvlistado.CurrentRow.Cells["ID"].Value);
+            this.NombreAnt = Convert.ToString(Dgvlistado.CurrentRow.Cells["Nombre"].Value);
+            txtNombre.Text = Convert.ToString(Dgvlistado.CurrentRow.Cells["Nombre"].Value);
+            txtDescripcion.Text = Convert.ToString(Dgvlistado.CurrentRow.Cells["Descripcion"].Value);
+            Tabgeneral.SelectedIndex = 1;
+            
+        }
+
+        private void Btnactualizar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string Rpta = "";
+                if (txtNombre.Text == string.Empty || txtId.Text== string.Empty)
+                {
+                    this.MensajeError("Faltan ingresar algunos datos, serán remarcados");// le paso el parametro para que me pase el error 
+                    ErrorIcono.SetError(txtNombre, "Ingrese un nombre."); //Para mostrar el icono de error el la caja de texto
+                }
+                else
+                {
+                    Rpta = NCategoria.Actualizar(Convert.ToInt32(txtId.Text), this.NombreAnt,txtNombre.Text.Trim(), txtDescripcion.Text.Trim());// le pasamos los parametros y ltrim para borrar los espacios
+                    if (Rpta.Equals(("OK")))
+                    {
+                        this.MensajeOk("Se Actualizó de forma correcta el registro.");
+                        this.Limpiar();
+                        this.Listar();//para llamar a los registros que estan registrador 
+                    }
+                    else
+                    {
+                        this.MensajeError(Rpta);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message + ex.StackTrace);
+            }
         }
     }
 }

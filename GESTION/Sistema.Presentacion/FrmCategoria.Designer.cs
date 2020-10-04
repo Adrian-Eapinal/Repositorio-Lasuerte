@@ -45,7 +45,7 @@
             this.btninsertar = new System.Windows.Forms.Button();
             this.btncancelar = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnactualizar = new System.Windows.Forms.Button();
             this.ErrorIcono = new System.Windows.Forms.ErrorProvider(this.components);
             this.Tabgeneral.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -93,6 +93,7 @@
             this.Dgvlistado.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.Dgvlistado.Size = new System.Drawing.Size(734, 330);
             this.Dgvlistado.TabIndex = 2;
+            this.Dgvlistado.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Dgvlistado_CellDoubleClick);
             // 
             // Seleccionar
             // 
@@ -102,7 +103,7 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.button3);
+            this.tabPage2.Controls.Add(this.btnactualizar);
             this.tabPage2.Controls.Add(this.label3);
             this.tabPage2.Controls.Add(this.btncancelar);
             this.tabPage2.Controls.Add(this.btninsertar);
@@ -221,14 +222,15 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "(*)Indica que el dato es obligatorio";
             // 
-            // button3
+            // btnactualizar
             // 
-            this.button3.Location = new System.Drawing.Point(153, 275);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(148, 23);
-            this.button3.TabIndex = 8;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnactualizar.Location = new System.Drawing.Point(153, 225);
+            this.btnactualizar.Name = "btnactualizar";
+            this.btnactualizar.Size = new System.Drawing.Size(148, 23);
+            this.btnactualizar.TabIndex = 8;
+            this.btnactualizar.Text = "Actualizar";
+            this.btnactualizar.UseVisualStyleBackColor = true;
+            this.btnactualizar.Click += new System.EventHandler(this.Btnactualizar_Click);
             // 
             // ErrorIcono
             // 
@@ -266,7 +268,7 @@
         private System.Windows.Forms.Button btnbuscar;
         private System.Windows.Forms.TextBox txtbuscar;
         private System.Windows.Forms.Label lblTotall;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnactualizar;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btncancelar;
         private System.Windows.Forms.Button btninsertar;
