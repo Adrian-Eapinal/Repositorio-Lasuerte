@@ -77,6 +77,11 @@ namespace Sistema.Presentacion
             btninsertar.Visible = true;
             btnactualizar.Visible = false;
             ErrorIcono.Clear();
+            Dgvlistado.Columns[0].Visible = false;
+            btnActivar.Visible = false;
+            btnDesactivar.Visible = false;
+            btnEliminar.Visible = false;
+            ChkSeleccionar.Checked = false;
 
         }
         private void MensajeError(string Mensaje)
@@ -159,15 +164,23 @@ namespace Sistema.Presentacion
 
         private void Dgvlistado_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            try
+            {
 
-            this.Limpiar();//para oculta el actualizar 
-            btnactualizar.Visible = true;
-            btninsertar.Visible = false;
-            txtId.Text = Convert.ToString(Dgvlistado.CurrentRow.Cells["ID"].Value);
-            this.NombreAnt = Convert.ToString(Dgvlistado.CurrentRow.Cells["Nombre"].Value);
-            txtNombre.Text = Convert.ToString(Dgvlistado.CurrentRow.Cells["Nombre"].Value);
-            txtDescripcion.Text = Convert.ToString(Dgvlistado.CurrentRow.Cells["Descripcion"].Value);
-            Tabgeneral.SelectedIndex = 1;
+                this.Limpiar();//para oculta el actualizar 
+                btnactualizar.Visible = true;
+                btninsertar.Visible = false;
+                txtId.Text = Convert.ToString(Dgvlistado.CurrentRow.Cells["ID"].Value);
+                this.NombreAnt = Convert.ToString(Dgvlistado.CurrentRow.Cells["Nombre"].Value);
+                txtNombre.Text = Convert.ToString(Dgvlistado.CurrentRow.Cells["Nombre"].Value);
+                txtDescripcion.Text = Convert.ToString(Dgvlistado.CurrentRow.Cells["Descripcion"].Value);
+                Tabgeneral.SelectedIndex = 1;
+            }
+            catch (Exception )
+            {
+
+                MessageBox.Show("Seleccione desde la celda nombre.");
+            }
             
         }
 
@@ -200,6 +213,153 @@ namespace Sistema.Presentacion
             {
 
                 MessageBox.Show(ex.Message + ex.StackTrace);
+            }
+        }
+
+        private void CheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ChkSeleccionar.Checked)
+            {
+                Dgvlistado.Columns[0].Visible = true;
+                btnActivar.Visible = true;
+                btnDesactivar.Visible = true;
+                btnEliminar.Visible = true;
+            }
+            else
+            {
+                Dgvlistado.Columns[0].Visible = false;
+                btnActivar.Visible = false;
+                btnDesactivar.Visible = false;
+                btnEliminar.Visible = false;
+            }
+        }
+
+        private void Dgvlistado_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex== Dgvlistado.Columns["Seleccionar"].Index)// PARA PODER MARCAR Y DESMARCAR 
+            {
+                DataGridViewCheckBoxCell ChkEliminar = (DataGridViewCheckBoxCell)Dgvlistado.Rows[e.RowIndex].Cells["Seleccionar"];
+                ChkEliminar.Value = !Convert.ToBoolean(ChkEliminar.Value);
+
+            }
+        }
+
+        private void BtnEliminar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DialogResult Opcion;
+
+                Opcion = MessageBox.Show("Realmente deseas eliminar el(los) registro(s)?", "Sistema de Entrada y Salida", MessageBoxButtons.OKCancel,MessageBoxIcon.Question);
+                if (Opcion == DialogResult.OK)
+                {
+                    int Codigo;
+                    string Rpta = "";
+
+                    foreach (DataGridViewRow row in Dgvlistado.Rows)
+                    {
+                        if (Convert.ToBoolean(row.Cells[0].Value))// si la fila actual esta marcada indicar que se puede eliminar 
+                        {
+                            Codigo = Convert.ToInt32( row.Cells[1].Value);
+                            Rpta = NCategoria.Eliminar(Codigo);
+
+                            if (Rpta.Equals("OK"))
+                            {
+                                this.MensajeOk("Se eliminó el registro: "+ Convert.ToString(row.Cells[2].Value));
+                            }
+                            else
+                            {
+                                this.MensajeError(Rpta);
+                            }
+                        }
+                    }
+                    this.Listar();
+                }
+            }
+            catch (Exception EX)
+            {
+
+                MessageBox.Show(EX.Message + EX.StackTrace);
+            }
+        }
+
+        private void BtnActivar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DialogResult Opcion;
+
+                Opcion = MessageBox.Show("Realmente deseas activar el(los) registro(s)?", "Sistema de Entrada y Salida", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (Opcion == DialogResult.OK)
+                {
+                    int Codigo;
+                    string Rpta = "";
+
+                    foreach (DataGridViewRow row in Dgvlistado.Rows)
+                    {
+                        if (Convert.ToBoolean(row.Cells[0].Value))// si la fila actual esta marcada indicar que se puede eliminar 
+                        {
+                            Codigo = Convert.ToInt32(row.Cells[1].Value);
+                            Rpta = NCategoria.Activar(Codigo);
+
+                            if (Rpta.Equals("OK"))
+                            {
+                                this.MensajeOk("Se activó el registro: " + Convert.ToString(row.Cells[2].Value));
+                            }
+                            else
+                            {
+                                this.MensajeError(Rpta);
+                            }
+                        }
+                    }
+                    this.Listar();
+                }
+            }
+            catch (Exception EX)
+            {
+
+                MessageBox.Show(EX.Message + EX.StackTrace);
+            }
+
+        }
+
+        private void BtnDesactivar_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                DialogResult Opcion;
+
+                Opcion = MessageBox.Show("Realmente deseas desactivar el(los) registro(s)?", "Sistema de Entrada y Salida", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (Opcion == DialogResult.OK)
+                {
+                    int Codigo;
+                    string Rpta = "";
+
+                    foreach (DataGridViewRow row in Dgvlistado.Rows)
+                    {
+                        if (Convert.ToBoolean(row.Cells[0].Value))// si la fila actual esta marcada indicar que se puede eliminar 
+                        {
+                            Codigo = Convert.ToInt32(row.Cells[1].Value);
+                            Rpta = NCategoria.Desactivar(Codigo);
+
+                            if (Rpta.Equals("OK"))
+                            {
+                                this.MensajeOk("Se desactivó el registro: " + Convert.ToString(row.Cells[2].Value));
+                            }
+                            else
+                            {
+                                this.MensajeError(Rpta);
+                            }
+                        }
+                    }
+                    this.Listar();
+                }
+            }
+            catch (Exception EX)
+            {
+
+                MessageBox.Show(EX.Message + EX.StackTrace);
             }
         }
     }
